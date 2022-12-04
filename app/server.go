@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net"
 	"os"
 	// Uncomment this block to pass the first stage
@@ -28,13 +29,15 @@ func main() {
 	}
 
 	for {
-		b := new([]byte)
-		_, err = c.Read(*b)
-		if err != nil {
-			fmt.Println("Failed to read bytes", err.Error())
-			os.Exit(1)
+		b := make([]byte, 1024)
+		if _, err := c.Read(b); err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				fmt.Println("error reading from client: ", err.Error())
+				os.Exit(1)
+			}
 		}
 		c.Write([]byte("+PONG\r\n"))
-		b = new([]byte)
 	}
 }
