@@ -26,11 +26,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	b := new([]byte)
-	_, err = c.Read(*b)
-	if err != nil {
-		fmt.Println("Failed to read bytes", err.Error())
-		os.Exit(1)
+	for {
+		b := new([]byte)
+		_, err = c.Read(*b)
+		if err != nil {
+			fmt.Println("Failed to read bytes", err.Error())
+			os.Exit(1)
+		}
+		c.Write([]byte("+PONG\r\n"))
 	}
-	c.Write([]byte("+PONG\r\n"))
 }
