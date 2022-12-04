@@ -29,7 +29,8 @@ func main() {
 
 	for {
 		b := new([]byte)
-		_, err = c.Read(*b)
+		n, err := c.Read(*b)
+		fmt.Printf("Reading from connection... %d bytes\n", n)
 		if err != nil {
 			fmt.Println("Failed to read bytes", err.Error())
 			os.Exit(1)
